@@ -12,15 +12,12 @@ import pulp
 from pulp import *
 
 filename = 'Hospital_data_20170426 June 26 2017 as of July 8  2018_latest_2.xlsm'
-#hosp = pd.read_excel(filename,sheet_name = 'Daywise surgery matrix',usecols = "A:AZ", userows = "1:54")
+
 df1 = pd.read_excel(filename,sheet_name = 'Daywise surgery matrix',usecols = "A:AZ",userows="1:54")
-#df1 = hosp.set_index("Group", drop = False)
+
 df2 = df1.head(53)
 df2.set_index('Group', inplace=True)
-#print(df2.index.values)
-#print(df2.loc[89,75])
-#for i in df2.index.values:
-#    for j in 
+ 
 maxm = 0.0
 max_dict = {}
 for i,j in df2.iterrows():
@@ -68,19 +65,12 @@ for i,j in df4.iterrows():
         a1=a1+1
         a2=0
 
-print(mat_weight)
-print(mat_assign_1)
-print(mat_assign_2)
-
 #Create variable to handle variables
 prob = LpProblem("Surgery Assignment",LpMaximize)
 
 mat_assign_unop = np.multiply(mat_weight,mat_assign_1)
-print(mat_assign_unop)
-print(np.matrix.sum(mat_assign_unop))
             
-
-#contraint array
+#constraint array
 #Row constraint
 row_con = mat_assign_2.sum(axis=1) 
 
@@ -99,17 +89,14 @@ for i in l1:
 
 prob.solve()
 op_sum=0
-print(l1)
-print(l2)
-print(l3)
+
 for i in l1:
     for j in l2:
         print(assign_vars[(i, j)].varValue)
         print(l3[i-1][j-1])
         op_sum=op_sum+ (l3[i-1][j-1]*assign_vars[(i, j)].varValue)
 print(op_sum)
-#Objective function
-#print(np.matrix.sum(np.multiply(mat_weight,mat_assign_2)))
+
 
             
         
